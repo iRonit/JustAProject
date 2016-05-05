@@ -9,15 +9,15 @@ package org.infosys.model;
  *
  * @author ronit01.trn
  */
-public class Device {
+public class Line {
     
     private int id;
     private String name;
     private String status;
-    private String type;
-    private String description;
+    private Devices devices;
+    private CallParty call_party;
 
-    public Device() {
+    public Line() {
     }
     
     public int getId() {
@@ -32,12 +32,12 @@ public class Device {
         return status;
     }
 
-    public String getType() {
-        return type;
+    public Devices getDevices() {
+        return devices;
     }
     
-    public String getDescription() {
-        return description;
+    public CallParty getCallParty() {
+        return call_party;
     }
 
     public void setId(int id) {
@@ -52,12 +52,12 @@ public class Device {
         this.status = status;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDevices(Devices devices) {
+        this.devices = devices;
     }
     
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCallParty(CallParty call_party) {
+        this.call_party = call_party;
     }
     
 }
