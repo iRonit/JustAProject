@@ -18,22 +18,24 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.spi.JsonProvider;
 import javax.websocket.Session;
-import org.infosys.model.Device;
+import org.infosys.model.Line;
 
 @ApplicationScoped
-public class DeviceSessionHandler {
+public class LineSessionHandler {
     
-    private int deviceId = 0;
+    private int lineId = 0;
     private final Set<Session> sessions = new HashSet<>();
-    private final Set<Device> devices = new HashSet<>();
+    private final Set<Line> lines = new HashSet<>();
     
     public void addSession(Session session) {
         sessions.add(session);
-        for (Device device: devices) {
-            JsonObject addMessage = createAddMessage(device);
+        for (Line line: lines) {
+            JsonObject addMessage = createAddMessage(line);
             sendToSession(session, addMessage);
         }
     }
@@ -42,23 +44,25 @@ public class DeviceSessionHandler {
         sessions.remove(session);
     }
     
-    //Methods operating on Device
-    public List getDevices() {
-        return new ArrayList<>(devices);
+    //Methods operating on Line
+    public List getLines() {
+        return new ArrayList<>(lines);
     }
 
-    public void addDevice(Device device) {
-        device.setId(deviceId);
-        devices.add(device);
-        deviceId++;
-        JsonObject addMessage = createAddMessage(device);
+    public void addLine(Line line) {
+        System.err.println("ADD LINE()");
+        System.out.println("add line()");
+        line.setId(lineId);
+        lines.add(line);
+        lineId++;
+        JsonObject addMessage = createAddMessage(line);
         sendToAllConnectedSessions(addMessage);
     }
 
-    public void removeDevice(int id) {
-        Device device = getDeviceById(id);
-        if (device != null) {
-            devices.remove(device);
+    public void removeLine(int id) {
+        Line line = getLineById(id);
+        if (line != null) {
+            lines.remove(line);
             JsonProvider provider = JsonProvider.provider();
             JsonObject removeMessage = provider.createObjectBuilder()
                     .add("action", "remove")
@@ -68,9 +72,10 @@ public class DeviceSessionHandler {
         }
     }
 
+    /*
     public void toggleDevice(int id) {
         JsonProvider provider = JsonProvider.provider();
-        Device device = getDeviceById(id);
+        Line device = getDeviceById(id);
         if (device != null) {
             if ("On".equals(device.getStatus())) {
                 device.setStatus("Off");
@@ -85,26 +90,43 @@ public class DeviceSessionHandler {
             sendToAllConnectedSessions(updateDevMessage);
         }
     }
-
-    private Device getDeviceById(int id) {
-        for (Iterator it = devices.iterator(); it.hasNext();) {
-            Device device = (Device) it.next();
-            if (device.getId() == id) {
-                return device;
+*/
+    
+    private Line getLineById(int id) {
+        for(Iterator it = lines.iterator(); it.hasNext();) {
+            Line line = (Line) it.next();
+            if (line.getId() == id) {
+                return line;
             }
         }
         return null;
     }
 
-    private JsonObject createAddMessage(Device device) {
+    private JsonObject createAddMessage(Line line) {
+        //JsonArray for devices associated with the line
+        JsonArrayBuilder deviceNames = Json.createArrayBuilder();
+        List<String> listOfDeviceNames = line.getDevices().getNames();
+        for(String name: listOfDeviceNames)
+        {
+            deviceNames.add(name);
+        }
+        //JsonArray for called party addresses 
+        JsonArrayBuilder calledParty = Json.createArrayBuilder();
+        List<String> listOfCalledParty = line.getCallParty().getCalled();
+        for(String called: listOfCalledParty)
+        {
+            calledParty.add(called);
+        }
+        //-------------------------------------------
         JsonProvider provider = JsonProvider.provider();
         JsonObject addMessage = provider.createObjectBuilder()
                 .add("action", "add")
-                .add("id", device.getId())
-                .add("name", device.getName())
-                .add("type", device.getType())
-                .add("status", device.getStatus())
-                .add("description", device.getDescription())
+                .add("id", line.getId())
+                .add("name", line.getName())
+                .add("status", line.getStatus())
+                .add("devices", deviceNames)
+                .add("caller", line.getCallParty().getCaller())
+                .add("called", calledParty)
                 .build();
         return addMessage;
     }
@@ -120,7 +142,7 @@ public class DeviceSessionHandler {
             session.getBasicRemote().sendText(message.toString());
         } catch (IOException ex) {
             sessions.remove(session);
-            Logger.getLogger(DeviceSessionHandler.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LineSessionHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
