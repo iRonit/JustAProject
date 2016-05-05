@@ -11,10 +11,11 @@ function login() {
         if(validate_uid()) {
             if(validate_pass()){
                 document.cookie = "uid="+document.getElementById("uid").value;
-                window.location.replace("home.html");
-            }else{alert("Invalid Password!")}
-        }else{alert("Invalid Username!");}
-    }else{alert("Invalid CUCM IP Address!");}
+                return true;
+                //window.location.replace("b.jsp");
+            }else{alert("Invalid Password!");return false;}
+        }else{alert("Invalid Username!");return false;}
+    }else{alert("Invalid CUCM IP Address!");return false;}
 }
 
 
