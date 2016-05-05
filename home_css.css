@@ -49,21 +49,21 @@ p {
     text-decoration: none;
 }
 
-#addDevice {
+#addLine {
     text-align: center;
     width: 960px;
     margin: auto;
     margin-bottom: 10px;
 }
 
-#addDeviceForm {
+#addLineForm {
     text-align: left;
     width: 400px;
     margin: auto;
     padding: 10px;
 }
 
-#addDeviceForm span {
+#addLineForm span {
     display: block;
 }
 
@@ -72,7 +72,7 @@ p {
     width: 960px;
 }
 
-.device {
+.line {
     width: 180px;
     height: 110px;
     margin: 10px;
@@ -85,66 +85,66 @@ p {
     display: inline-block;
 }
 
-.device.off {
+.line.off {
     background-color: #c8cccf;
 }
 
-.device span {
+.line span {
     display: block;
 }
 
-.deviceName {
+.lineName {
     text-align: center;
     font-weight: bold;
     margin-bottom: 12px;
 }
 
-.removeDevice {
+.removeLine {
     margin-top: 12px;
     text-align: center;
 }
 
-.device.Appliance {
+.line.Appliance {
     background-color: #5eb85e;
 }
 
-.device.Appliance a:hover {
+.line.Appliance a:hover {
     color: #a1ed82;
 }
 
-.device.Electronics {   
+.line.Electronics {   
     background-color: #0f90d1;
 }
 
-.device.Electronics a:hover {
+.line.Electronics a:hover {
     color: #4badd1;
 }
 
-.device.Lights {
+.line.Lights {
     background-color: #c2a00c;
 }
 
-.device.Lights a:hover {
+.line.Lights a:hover {
     color: #fad232;
 }
 
-.device.Other {
+.line.Other {
     background-color: #db524d;
 }
 
-.device.Other a:hover {
+.line.Other a:hover {
     color: #ff907d;
 }
 
-.device a {
+.line a {
     text-decoration: none;
 }
 
-.device a:visited, a:active, a:hover {
+.line a:visited, a:active, a:hover {
     color: #fff;
 }
 
-.device a:hover {
+.line a:hover {
     text-decoration: underline;
 }
 
