@@ -17,29 +17,18 @@
             <br/>
             <div class="content">Hello <span class='username'></span></div>
             <br />
-            <div id="addDevice">
-                <div class="button"> <a href="#" OnClick="showForm()">Add a device</a> </div>
-                <form id="addDeviceForm">
-                    <h3>Add a new device</h3>
-                    <span>Name: <input type="text" name="device_name" id="device_name"></span>
-                    <span>Type: 
-                        <select id="device_type">
-                            <option name="type" value="Appliance">Appliance</option>
-                            <option name="type" value="Electronics">Electronics</option>
-                            <option name="type" value="Lights">Lights</option>
-                            <option name="type" value="Other">Other</option>
-                        </select></span>
-
-                    <span>Description:<br />
-                        <textarea name="description" id="device_description" rows="2" cols="50"></textarea>
-                    </span>
-
+            <div id="addLine">
+                <div class="button"> <a href="#" OnClick="showForm()">Add a Line!</a> </div>
+                <form id="addLineForm">
+                    <h3>Add a new line!</h3>
+                    <span>Name: <input type="text" name="line_name" id="line_name"></span>
+                    
                     <input type="button" class="button" value="Add" onclick=formSubmit()>
                     <input type="reset" class="button" value="Cancel" onclick=hideForm()>
                 </form>
             </div>
             <br />
-            <h3>Currently connected devices:</h3>
+            <h3>User's Lines:</h3>
             <div id="content">
             </div>
         </div>
