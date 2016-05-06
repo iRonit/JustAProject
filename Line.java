@@ -18,6 +18,8 @@ public class Line {
     private CallParty call_party;
 
     public Line() {
+        devices = new Devices();
+        callParty = new CallParty();
     }
     
     public int getId() {
