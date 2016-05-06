@@ -70,56 +70,87 @@ p {
 #content {
     margin: auto;
     width: 960px;
+    text-align: center;
 }
 
-.line {
-    width: 220px;
-    height: 140px;
-    margin: 10px;
-    padding: 16px;
-    color: #fff;
-    vertical-align: top;
-    border-radius: 8px;
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
+.devices {
+    margin: 3px;
+    padding: 3px;
     display: inline-block;
+    -webkit-align-content: center;
+    word-wrap: break-word;
+}
+
+
+.line {
+    width: 250px;
+    height: 200px;
+
 }
 
 
 .line span {
     display: block;
+    margin: 5px;
 }
 
-.lineName {
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 12px;
-}
 
 .removeLine {
     margin-top: 12px;
     text-align: center;
 }
 
-.line.idle {
-    background-color: #db524d;
+
+
+.line {
+    margin: 20px;
+    vertical-align: top;
+    display: inline-block;
 }
 
-.line.idle a:hover {
-    color: #ff907d;
+.lineName {
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    font-weight: bold;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    -moz-border-top-left-radius: 8px;
+    -moz-border-top-right-radius: 8px;
+    -webkit-border-top-left-radius: 8px;
+    -webkit-border-top-right-radius: 8px;
+    padding-top: 12px;
+    display: inline-block;
+}
+.lineName.idle {
+    background-color: #D32F2F;
+}
+.lineName.active {
+    background-color: #388E3C;
 }
 
-.line.active {   
-    background-color: #5eb85e;
+.lineContent {
+    background-color: #F5F5F5;
+    height: auto;
+    color: #000000;
+    text-align: left;
+    padding-top: 12px;
+    vertical-align: top;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    -moz-border-bottom-left-radius: 8px;
+    -moz-border-bottom-right-radius: 8px;
+    -webkit-border-bottom-left-radius: 8px;
+    -webkit-border-bottom-right-radius: 8px;
 }
 
-.line.active a:hover {
-    color: #a1ed82;
-}
-
-.caller {
-    background-color: #008dde;
+.caller, .called {
+    color: #000000;
+    margin: 3px;
+    padding: 3px;
+    display: inline-block;
     -webkit-align-content: center;
+    word-wrap: break-word;
 }
 
 .line a {
