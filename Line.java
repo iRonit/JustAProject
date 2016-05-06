@@ -15,7 +15,7 @@ public class Line {
     private String name;
     private String status;
     private Devices devices;
-    private CallParty call_party;
+    private CallParty callParty;
 
     public Line() {
         devices = new Devices();
@@ -39,7 +39,7 @@ public class Line {
     }
     
     public CallParty getCallParty() {
-        return call_party;
+        return callParty;
     }
 
     public void setId(int id) {
@@ -58,8 +58,8 @@ public class Line {
         this.devices = devices;
     }
     
-    public void setCallParty(CallParty call_party) {
-        this.call_party = call_party;
+    public void setCallParty(CallParty callParty) {
+        this.callParty = callParty;
     }
     
 }
