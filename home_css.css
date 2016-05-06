@@ -73,8 +73,8 @@ p {
 }
 
 .line {
-    width: 180px;
-    height: 110px;
+    width: 220px;
+    height: 140px;
     margin: 10px;
     padding: 16px;
     color: #fff;
@@ -85,9 +85,6 @@ p {
     display: inline-block;
 }
 
-.line.off {
-    background-color: #c8cccf;
-}
 
 .line span {
     display: block;
@@ -104,36 +101,25 @@ p {
     text-align: center;
 }
 
-.line.Appliance {
-    background-color: #5eb85e;
-}
-
-.line.Appliance a:hover {
-    color: #a1ed82;
-}
-
-.line.Electronics {   
-    background-color: #0f90d1;
-}
-
-.line.Electronics a:hover {
-    color: #4badd1;
-}
-
-.line.Lights {
-    background-color: #c2a00c;
-}
-
-.line.Lights a:hover {
-    color: #fad232;
-}
-
-.line.Other {
+.line.idle {
     background-color: #db524d;
 }
 
-.line.Other a:hover {
+.line.idle a:hover {
     color: #ff907d;
+}
+
+.line.active {   
+    background-color: #5eb85e;
+}
+
+.line.active a:hover {
+    color: #a1ed82;
+}
+
+.caller {
+    background-color: #008dde;
+    -webkit-align-content: center;
 }
 
 .line a {
