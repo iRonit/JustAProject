@@ -11,15 +11,14 @@ if(check==="")
 
 
 window.onload = init;
-alert(document.location.host+"\n"+document.location.pathname);
+
+//alert(document.location.host+"\n"+document.location.pathname);
 var socket = new WebSocket("ws://localhost:38940/WebCTIConnector/CTIConnector");
+
 socket.onmessage = onMessage;
-
 function onMessage(event) {
-    alert("Event: "+event.data);
     var line = JSON.parse(event.data);
-    alert("Break point!!\n  "+line.action);
-
+    
     if (line.action === "add") {
         printDeviceElement(line);
         
@@ -44,10 +43,10 @@ function addLine(name) {
     var LineAction = {
         action: "add",
         name: name,
-        status: "idle",
-        lines:["123"],
+        status: "active",
+        devices:["123"],
         caller:"ronit",
-        called:["1233","4322"]
+        called:["1233","4322","456566","456456","456456"]
     };
     socket.send(JSON.stringify(LineAction));
     alert(socket.readyState);
@@ -68,7 +67,7 @@ function printDeviceElement(line) {
     
     var lineDiv = document.createElement("div");
     lineDiv.setAttribute("id", line.id);
-    lineDiv.setAttribute("class", "status" + line.status);
+    lineDiv.setAttribute("class", "line "+line.status);
     content.appendChild(lineDiv);
 
     var lineName = document.createElement("span");
@@ -102,15 +101,17 @@ function printDeviceElement(line) {
     
     
     //--------------------------------------------------------------------------
-    var lineCaller = document.createElement("span");
-    lineCaller.innerHTML = "<b>Caller:</b> " + line.caller;
-    lineDiv.appendChild(lineCaller);
+    if(line.status==="active")
+    {
+        var lineCaller = document.createElement("span");
+        lineCaller.innerHTML = "<b>Caller:</b> " + line.caller;
+        lineDiv.appendChild(lineCaller);
     
-    var lineCalled = document.createElement("span");
-    lineCalled.innerHTML = "<b>Called:</b> " + line.called;
-    lineDiv.appendChild(lineCalled);
+        var lineCalled = document.createElement("span");
+        lineCalled.innerHTML = "<b>Called:</b> " + line.called;
+        lineDiv.appendChild(lineCalled);
     //--------------------------------------------------------------------------
-   
+    }
 
     var removeDevice = document.createElement("span");
     removeDevice.setAttribute("class", "removeDevice");
