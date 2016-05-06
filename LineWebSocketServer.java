@@ -54,24 +54,22 @@ public class LineWebSocketServer {
 
     @OnMessage
     public void handleMessage(String message, Session session) {
-        System.out.println("BreakPoint: "+message);
-        try (JsonReader reader = Json.createReader(new StringReader(message))) {
+        try {
+            JsonReader reader = Json.createReader(new StringReader(message));
             JsonObject jsonMessage = reader.readObject();
-
             if ("add".equals(jsonMessage.getString("action"))) {
                 Line line = new Line();
                 line.setName(jsonMessage.getString("name"));
                 line.setStatus(jsonMessage.getString("status"));
-                
                 //----------------For Devices---------------------------
                 List<String> names = new ArrayList<>();
                 JsonArray deviceNames = jsonMessage.getJsonArray("devices");
                 for (JsonValue jsonValue : deviceNames) {
+                    System.err.println(jsonValue.toString());
                     names.add(jsonValue.toString());
                 }
                 line.getDevices().setNames(names);
                 //------------------------------------------------------
-                
                 line.getCallParty().setCaller(jsonMessage.getString("caller"));
                 
                 //----------------For Called Party----------------------
@@ -90,7 +88,7 @@ public class LineWebSocketServer {
                 sessionHandler.removeLine(id);
             }
         }catch(Exception e){
-            System.out.println("EXCEPTION IN HANDLEMESAGE!!!");
+            System.out.println("EXCEPTION IN HANDLEMESSAGE!!");
         }
     }
         
