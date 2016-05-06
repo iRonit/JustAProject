@@ -43,7 +43,7 @@ function addLine(name) {
     var LineAction = {
         action: "add",
         name: name,
-        status: "active",
+        status: "idle",
         devices:["123"],
         caller:"ronit",
         called:["1233","4322","456566","456456","456456"]
@@ -70,14 +70,18 @@ function printDeviceElement(line) {
     lineDiv.setAttribute("class", "line "+line.status);
     content.appendChild(lineDiv);
 
-    var lineName = document.createElement("span");
-    lineName.setAttribute("class", "lineName");
-    lineName.innerHTML = line.name;
-    lineDiv.appendChild(lineName);
-
+    var lineNameDiv = document.createElement("div");
+    lineNameDiv.setAttribute("class", "lineName "+line.status);
+    lineNameDiv.innerHTML = line.name;
+    lineDiv.appendChild(lineNameDiv);
+    
+    var lineContentDiv = document.createElement("div");
+    lineContentDiv.setAttribute("class","lineContent");
+    lineDiv.appendChild(lineContentDiv);
+    
     var lineStatus = document.createElement("span");
     lineStatus.innerHTML = "<b>Status: " + line.status + "</b>";
-    lineDiv.appendChild(lineStatus);
+    lineContentDiv.appendChild(lineStatus);
     
     
  
@@ -96,27 +100,30 @@ function printDeviceElement(line) {
    
    
     var lineDevices = document.createElement("span");
-    lineDevices.innerHTML = "<b>Devices:</b> " + line.devices;
-    lineDiv.appendChild(lineDevices);
+    lineDevices.setAttribute("class","devices");
+    lineDevices.innerHTML = "<b>Devices:</b> " + line.devices.toString().replace(/"/g,"").replace(/,/g,", ");
+    lineContentDiv.appendChild(lineDevices);
     
     
     //--------------------------------------------------------------------------
     if(line.status==="active")
     {
         var lineCaller = document.createElement("span");
-        lineCaller.innerHTML = "<b>Caller:</b> " + line.caller;
-        lineDiv.appendChild(lineCaller);
+        lineCaller.setAttribute("class","caller");
+        lineCaller.innerHTML = "<b>Caller:</b> " + line.caller.toString().replace(/"/g,"").replace(/,/g,", ");
+        lineContentDiv.appendChild(lineCaller);
     
         var lineCalled = document.createElement("span");
-        lineCalled.innerHTML = "<b>Called:</b> " + line.called;
-        lineDiv.appendChild(lineCalled);
+        lineCalled.setAttribute("class","called");
+        lineCalled.innerHTML = "<b>Called:</b> " + line.called.toString().replace(/"/g,"").replace(/,/g,", ");
+        lineContentDiv.appendChild(lineCalled);
     //--------------------------------------------------------------------------
     }
 
     var removeDevice = document.createElement("span");
     removeDevice.setAttribute("class", "removeDevice");
     removeDevice.innerHTML = "<a href=\"#\" OnClick=removeDevice(" + line.id + ")>Remove line</a>";
-    lineDiv.appendChild(removeDevice);
+    lineContentDiv.appendChild(removeDevice);
 }
 
 function showForm() {
