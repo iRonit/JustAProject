@@ -50,6 +50,8 @@ public class LineSessionHandler {
     }
 
     public void addLine(Line line) {
+        System.err.println("ADD LINE()");
+        System.out.println("add line()");
         line.setId(lineId);
         lines.add(line);
         lineId++;
@@ -58,7 +60,6 @@ public class LineSessionHandler {
     }
 
     public void removeLine(int id) {
-        
         Line line = getLineById(id);
         if (line != null) {
             lines.remove(line);
@@ -68,9 +69,28 @@ public class LineSessionHandler {
                     .add("id", id)
                     .build();
             sendToAllConnectedSessions(removeMessage);
-            System.err.println("Removed line: "+id);
         }
     }
+
+    /*
+    public void toggleDevice(int id) {
+        JsonProvider provider = JsonProvider.provider();
+        Line device = getDeviceById(id);
+        if (device != null) {
+            if ("On".equals(device.getStatus())) {
+                device.setStatus("Off");
+            } else {
+                device.setStatus("On");
+            }
+            JsonObject updateDevMessage = provider.createObjectBuilder()
+                    .add("action", "toggle")
+                    .add("id", device.getId())
+                    .add("status", device.getStatus())
+                    .build();
+            sendToAllConnectedSessions(updateDevMessage);
+        }
+    }
+*/
     
     private Line getLineById(int id) {
         for(Iterator it = lines.iterator(); it.hasNext();) {
@@ -112,7 +132,6 @@ public class LineSessionHandler {
     }
 
     private void sendToAllConnectedSessions(JsonObject message) {
-        System.err.println("REMOVE IN HANDLER");
         for (Session session: sessions) {
             sendToSession(session, message);
         }
@@ -120,7 +139,6 @@ public class LineSessionHandler {
 
     private void sendToSession(Session session, JsonObject message) {
         try {
-            System.err.println(message);
             session.getBasicRemote().sendText(message.toString());
         } catch (IOException ex) {
             sessions.remove(session);
