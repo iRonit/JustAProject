@@ -17,23 +17,23 @@ and open the template in the editor.
     <br/>
     <center><h1><strong>Cisco CTI Connector Client</strong> </h1></center>
     <div id="login">
-        <form action="b.jsp" method="post" onsubmit="return login();">
+        <form action="loginRedirection.jsp" method="post" onsubmit="return login();">
         <fieldset>
             <table>
             <tr>
                 <td>CUCM IP Address</td> 
-                <td style="padding-left:25px"><input type="text" name="ip_addr"  id="ip_addr" value="" required></td>
+                <td style="padding-left:25px"><input type="text" name="ip_addr" id="ip_addr" value="" required></td>
             </tr>
             <tr>
                 <td>User</td>
-                <td style="padding-left:25px"><input type="text" name="uid" id="uid"  value="" required></td>
+                <td style="padding-left:25px"><input type="text" name="uid" id="uid" value="" onclick="validate_ip_addr();" required></td>
             </tr>
             <tr>
                 <td>Password</td>
-                <td style="padding-left:25px"><input type="password" name="pass" id="pass" value="" required></td>
+                <td style="padding-left:25px"><input type="password" name="pass" id="pass" value="" onclick="validate_uid();" required></td>
             </tr>
             </table>
-            <p><input class="button" type="submit" value="Login" ><p>
+            <p><input class="button" type="submit" value="Login"><p>
         </fieldset>
         </form>
     </div>
