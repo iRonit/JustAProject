@@ -3,56 +3,40 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-//Disabling direct access to this page
 var check = getCookie("uid");
 if(check==="")
     window.location.href = "index.html";
 
-
 window.onload = init;
 
-//alert(document.location.host+"\n"+document.location.pathname);
-var socket = new WebSocket("ws://localhost:38940/WebCTIConnector/CTIConnector");
-
+var socket = new WebSocket("ws://localhost:8080/CiscoCTIConnector/CTIConnector");
 socket.onmessage = onMessage;
+
 function onMessage(event) {
     var line = JSON.parse(event.data);
-    
+    alert(line.action);
     if (line.action === "add") {
-        printDeviceElement(line);
-        
+        printLineElement(line);
     }
     if (line.action === "remove") {
         document.getElementById(line.id).remove();
         //line.parentNode.removeChild(line);
     }
-    /*if (line.action === "toggle") {
-        var node = document.getElementById(line.id);
-        var statusText = node.children[2];
-        if (line.status === "On") {
-            statusText.innerHTML = "Status: " + line.status + " (<a href=\"#\" OnClick=toggleDevice(" + line.id + ")>Turn off</a>)";
-        } else if (line.status === "Off") {
-            statusText.innerHTML = "Status: " + line.status + " (<a href=\"#\" OnClick=toggleDevice(" + line.id + ")>Turn on</a>)";
-        }
-    }*/
-           
 }
 
 function addLine(name) {
     var LineAction = {
         action: "add",
         name: name,
-        status: "idle",
+        status: "active",
         devices:["123"],
         caller:"ronit",
         called:["1233","4322","456566","456456","456456"]
     };
     socket.send(JSON.stringify(LineAction));
-    alert(socket.readyState);
 }
 
-function removeDevice(element) {
+function removeLine(element) {
     var id = element;
     var LineAction = {
         action: "remove",
@@ -61,8 +45,7 @@ function removeDevice(element) {
     socket.send(JSON.stringify(LineAction));
 }
 
-
-function printDeviceElement(line) {
+function printLineElement(line) {
     var content = document.getElementById("content");
     
     var lineDiv = document.createElement("div");
@@ -84,21 +67,6 @@ function printDeviceElement(line) {
     lineContentDiv.appendChild(lineStatus);
     
     
- 
-    /*
-    var lineStatus = document.createElement("span");
-    if (line.status === "On") {
-        lineStatus.innerHTML = "<b>Status:</b> " + line.status + " (<a href=\"#\" OnClick=toggleDevice(" + line.id + ")>Turn off</a>)";
-    } else if (line.status === "Off") {
-        lineStatus.innerHTML = "<b>Status:</b> " + line.status + " (<a href=\"#\" OnClick=toggleDevice(" + line.id + ")>Turn on</a>)";
-        //lineDiv.setAttribute("class", "line off");
-    }
-    lineDiv.appendChild(lineStatus);
-    */
-   
-   
-   
-   
     var lineDevices = document.createElement("span");
     lineDevices.setAttribute("class","devices");
     lineDevices.innerHTML = "<b>Devices:</b> " + line.devices.toString().replace(/"/g,"").replace(/,/g,", ");
@@ -120,10 +88,10 @@ function printDeviceElement(line) {
     //--------------------------------------------------------------------------
     }
 
-    var removeDevice = document.createElement("span");
-    removeDevice.setAttribute("class", "removeDevice");
-    removeDevice.innerHTML = "<a href=\"#\" OnClick=removeDevice(" + line.id + ")>Remove line</a>";
-    lineContentDiv.appendChild(removeDevice);
+    var removeLine = document.createElement("span");
+    removeLine.setAttribute("class", "removeLine");
+    removeLine.innerHTML = "<a href=\"#\" OnClick=removeLine(" + line.id + ")>Remove line</a>";
+    lineContentDiv.appendChild(removeLine);
 }
 
 function showForm() {
@@ -144,7 +112,12 @@ function formSubmit() {
 
 function init() {
     document.querySelector('.content .username').innerHTML = getCookie('uid')+"!";
+    /*var LineAction = {
+        action: "onLoginSuccessful"
+    };*/
     hideForm();
+    //socket.send(JSON.stringify(LineAction));
+    alert("INIT");
 }
 
 
@@ -177,3 +150,5 @@ function getCookie(cname) {
 function destroyCookie(){
     document.cookie = "uid=";
 }
+
+
