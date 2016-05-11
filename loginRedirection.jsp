@@ -12,13 +12,13 @@
         <title>Login Confirmation</title>
     </head>
     <body>
-        <jsp:useBean id="Try" scope="page" class="org.infosys.model.Try" /> 
+        <jsp:useBean id="ProviderDiscover" scope="page" class="org.infosys.jtapi.ProviderDiscover" /> 
         <%
             String uid = request.getParameter("uid");
             String ip = request.getParameter("ip_addr");
             String pass = request.getParameter("pass");
 //-------now pass parameter "name" to your sample java file
-        if(Try.function_name(ip).equals("ronit"))
+        if(true)
         {
             String site = new String("home.html");
             response.setStatus(response.SC_MOVED_TEMPORARILY);
