@@ -14,6 +14,7 @@ import javax.telephony.Address;
 import javax.telephony.Call;
 import javax.telephony.CallObserver;
 import javax.telephony.Connection;
+import javax.telephony.callcontrol.events.CallCtlConnDisconnectedEv;
 import javax.telephony.events.CallEv;
 import javax.telephony.events.ConnDisconnectedEv;
 import javax.telephony.events.ConnEv;
@@ -27,7 +28,7 @@ import org.infosys.websocket.LineSessionHandler;
 
 public class ClientObserver implements CallObserver{
 
-    private LineSessionHandler sessionHandler;
+    private final LineSessionHandler sessionHandler;
     private Connection conn;
     
     public ClientObserver(LineSessionHandler sessionHandler) {
@@ -36,27 +37,39 @@ public class ClientObserver implements CallObserver{
     
 
     @Override
-    public synchronized final void callChangedEvent(CallEv [] events) {
-
+    public synchronized void callChangedEvent(CallEv [] events) {
+        
         for(CallEv event: events)
         {
+            System.err.println("Event Recieved............"+event);
             if(event instanceof ConnEv)
-            {   
-                
+            {  
                 switch(event.getID()) {
                     case ConnDisconnectedEv.ID:
-                    case     
-                        updateToIdle(event);
-                        break;
+                    case CallCtlConnDisconnectedEv.ID:        
+                        
+                        new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateToIdle(event);
+                                }
+                            } ).start();
+                    break;
+                    
                     default:
-                        updateToActive(event);
-                }
+                        new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updateToActive(event);
+                                }
+                            } ).start();
+            }
             }
         }
     }
 	
 	public synchronized final void updateToIdle(CallEv event) {
-		Address lineAddr;
+		Address lineAddr = null;
 		try {
 			conn = ((ConnEv)event).getConnection();
 			lineAddr = conn.getAddress();
@@ -66,11 +79,11 @@ public class ClientObserver implements CallObserver{
 			sessionHandler.getIdByLineName(lineAddr.getName()));
 		//Update the status of Line(lineAddr) to idle
 		updatedLine.setStatus("idle");
-        sessionHandler.updateLine(updatedLine);	
+        sessionHandler.updateLine(updatedLine);
 	}
 	
 	public synchronized final void updateToActive(CallEv event) {
-		Address lineAddr;
+		Address lineAddr = null;
 		try {
 			conn = ((ConnEv)event).getConnection();
 			lineAddr = conn.getAddress();
