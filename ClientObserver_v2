@@ -1,0 +1,94 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.infosys.jtapi;
+
+
+
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.telephony.Address;
+import javax.telephony.Call;
+import javax.telephony.CallObserver;
+import javax.telephony.Connection;
+import javax.telephony.events.CallEv;
+import javax.telephony.events.ConnDisconnectedEv;
+import javax.telephony.events.ConnEv;
+import org.infosys.model.Line;
+import org.infosys.websocket.LineSessionHandler;
+
+/**
+ *
+ * @author Administrator
+ */
+
+public class ClientObserver implements CallObserver{
+
+    private LineSessionHandler sessionHandler;
+    private Connection conn;
+    
+    public ClientObserver(LineSessionHandler sessionHandler) {
+        this.sessionHandler = sessionHandler;
+    }
+    
+
+    @Override
+    public synchronized final void callChangedEvent(CallEv [] events) {
+
+        for(CallEv event: events)
+        {
+            if(event instanceof ConnEv)
+            {   
+                
+                switch(event.getID()) {
+                    case ConnDisconnectedEv.ID:
+                    case     
+                        updateToIdle(event);
+                        break;
+                    default:
+                        updateToActive(event);
+                }
+            }
+        }
+    }
+	
+	public synchronized final void updateToIdle(CallEv event) {
+		Address lineAddr;
+		try {
+			conn = ((ConnEv)event).getConnection();
+			lineAddr = conn.getAddress();
+		}
+		catch(Exception e) {}
+		Line updatedLine = sessionHandler.getLineById(
+			sessionHandler.getIdByLineName(lineAddr.getName()));
+		//Update the status of Line(lineAddr) to idle
+		updatedLine.setStatus("idle");
+        sessionHandler.updateLine(updatedLine);	
+	}
+	
+	public synchronized final void updateToActive(CallEv event) {
+		Address lineAddr;
+		try {
+			conn = ((ConnEv)event).getConnection();
+			lineAddr = conn.getAddress();
+		}
+		catch(Exception e) {}
+		Line updatedLine = sessionHandler.getLineById(
+			sessionHandler.getIdByLineName(lineAddr.getName()));
+		//Update status to active
+		updatedLine.setStatus("active");
+		//Update call party info
+		Call call = conn.getCall();
+		Connection callConns[] = call.getConnections();
+		List<String> names = new ArrayList<>();
+		for(Connection c: callConns)
+			if(!c.getAddress().getName().equals(conn.getAddress().getName()))
+				names.add(c.getAddress().getName());
+		updatedLine.getCallParty().setCaller(conn.getAddress().getName());
+		updatedLine.getCallParty().setCalled(names);
+		sessionHandler.updateLine(updatedLine);
+	}
+}
